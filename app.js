@@ -159,7 +159,7 @@ function listToStr(l, check) {
 
 
 function getValue(v) {
-    if (v.split(".")[0] !== v) {
+    if (vars[v.split(".")[0]] !== undefined && v.split(".")[0] !== v) {
         return vars[v.split(".")[0]][v.split(".")[1]];
     }
 
@@ -188,9 +188,12 @@ function externalRun(kwd, args) {
     } else if (kwd === "OUT") {
         toDisplay += listToStr(args, true) + "\n";
     } else if (kwd === "RDM") {
+        if (Array.isArray(vars[args[0]])) {
+            return vars[args[0]][Math.floor(Math.random() * parseInt(vars[args[0]].length))]
+        }
         return Math.floor(Math.random() * (parseInt(args[0]) + 1));
     } else if (kwd === "EVL") {
-        return math.evaluate(listToStr(args));
+        return math.evaluate(listToStr(args, true));
     } else {
         return;
     }
