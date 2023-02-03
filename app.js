@@ -3,16 +3,27 @@ const code = document.querySelector(".actualcode");
 const out = document.querySelector(".console");
 const next = document.querySelector(".next");
 const prev = document.querySelector(".prev");
+const save = document.querySelector(".save");
 
 let currentPage = 1;
 let toDisplay = "";
 let vars = {};
-let lastCdn = false;
+let lastCdn = undefined;
+let kwds = ["OUT", "EQU", "VAR", "CDN", "EXS", "NXT", "RDM", "EVL", "ELSE", "LST"]
 
 run.addEventListener("click", () => {
     clearConsole(out);
     interpretCode();
     displayCode(0, 13);
+})
+
+window.addEventListener("load", () => {
+    code.value = window.localStorage.getItem(window.localStorage.getItem("name"));
+})
+
+save.addEventListener("click", () => {
+    window.localStorage.setItem(code.textContent, code.value);
+    window.localStorage.setItem("name", code.textContent)
 })
 
 next.addEventListener("click", () => {
@@ -65,7 +76,6 @@ function displayCode(s, e) {
 function clearConsole(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
-
     }
 
 }
@@ -78,12 +88,20 @@ function interpretCode() {
         args = line.split(" ").slice(1);
 
         if (kwd === "OUT") {
-            toDisplay += listToStr(args, true) + "\n";
-        } else if (kwd === "VAR") {
-            if (args[1] === "RDM") {
-                args[1] = externalRun("RDM", args.slice(1))
+            if (findIn(kwds, args[0])) {
+                args[0] = externalRun(args[0], args.slice(1));
+                toDisplay += args[0] + "\n";
+            } else {
+                toDisplay += listToStr(args, check = true) + "\n";
             }
-            vars[args[0]] = args[1];
+        } else if (kwd === "VAR") {
+            if (findIn(kwds, args[1])) {
+                args[1] = externalRun(args[1], args.slice(2));
+                vars[args[0]] = args[1];
+            } else {
+                vars[args[0]] = listToStr(args.slice(1));
+            }
+
         } else if (kwd === "EQU") {
             if (getValue(args[0]).toString() === getValue(args[1]).toString()) {
                 toDisplay += "true" + "\n";
@@ -101,9 +119,17 @@ function interpretCode() {
         } else if (kwd === "NXT") {
             if (lastCdn === true) {
                 externalRun(args[0], args.slice(1))
+                lastCdn = undefined;
+            }
+        } else if (kwd === "ELSE") {
+            if (lastCdn === false) {
+                externalRun(args[0], args.slice(1))
+                lastCdn = undefined;
             }
         } else if (kwd === "EVL") {
             toDisplay += math.evaluate(listToStr(args)) + "\n";
+        } else if (kwd === "LST") {
+            vars[args[0]] = args.slice(1);
         } else {
             console.log("lost in translation")
         }
@@ -112,14 +138,20 @@ function interpretCode() {
 
 function listToStr(l, check) {
     let tmp = "";
-    for (i = 0; i < l.length; i++) {
-        if (check === true) {
-            tmp += getValue(l[i]) + " ";
-        } else {
-            tmp += l[i] + " ";
+    if (l.length !== 1) {
+        for (i = 0; i < l.length; i++) {
+            if (check === true) {
+                tmp += getValue(l[i]) + " ";
+            } else {
+                tmp += l[i] + " ";
+            }
         }
-
-
+    } else {
+        if (check === true) {
+            tmp += getValue(l[0]);
+        } else {
+            tmp += l[0];
+        }
     }
 
     return tmp;
@@ -151,7 +183,7 @@ function externalRun(kwd, args) {
     } else if (kwd === "OUT") {
         toDisplay += listToStr(args, true) + "\n";
     } else if (kwd === "RDM") {
-        return Math.floor(Math.random() * (parseInt(args[1]) + 1));
+        return Math.floor(Math.random() * (parseInt(args[0]) + 1));
     } else if (kwd === "EVL") {
         return math.evaluate(listToStr(args));
     } else {
@@ -159,4 +191,14 @@ function externalRun(kwd, args) {
     }
 
     return;
+}
+
+function findIn(arr, s) {
+    for (i = 0; i < arr.length; i++) {
+        if (arr[i] === s) {
+            return true;
+        }
+    }
+
+    return false;
 }

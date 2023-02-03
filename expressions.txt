@@ -6,3 +6,4 @@ EXS = exists
 NXT = next
 RDM = random
 EVL = evaluate expression
+ELSE = else
