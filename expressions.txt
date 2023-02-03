@@ -1,0 +1,8 @@
+OUT = output
+EQU = equals
+VAR = variable
+CDN = condition
+EXS = exists
+NXT = next
+RDM = random
+EVL = evaluate expression
