@@ -129,7 +129,7 @@ function interpretCode() {
         } else if (kwd === "EVL") {
             toDisplay += math.evaluate(listToStr(args)) + "\n";
         } else if (kwd === "LST") {
-            vars[args[0]] = args.slice(1);
+            vars[args[0]] = listToStr(args.slice(1), true).split(" ");
         } else {
             console.log("lost in translation")
         }
@@ -157,7 +157,12 @@ function listToStr(l, check) {
     return tmp;
 }
 
+
 function getValue(v) {
+    if (v.split(".")[0] !== v) {
+        return vars[v.split(".")[0]][v.split(".")[1]];
+    }
+
     if (vars[v] != undefined) {
         return vars[v];
     } else {
