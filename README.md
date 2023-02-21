@@ -4,16 +4,16 @@ A "programming language" I made, it ressembles assembly, but it's not effecient 
 
 ## Syntax
 
-**OUT**: Outputs to the console\n
-**EQU**: Checks if the 2 arguments that follow are equal (can be variables or hardcoded)
-**VAR**: Creates a variable with the using the 2 following arguments as the name and value
-**CDN**: checks a condition (basically an if statement) argument that follows CDN must be a keyword
-**NXT**: defines what should be executed if above CDN returns true
-**ELSE**: defines what should be executed if above CDN returns false
-**EXS**: check if variable name that follows is defined
-**RDM**: returns a random value between 0 and the first argument
-**EVL**: evaluates the math expression that follows
-**LST**: creates a list, uses the first argument as the name and the others as value added to the list
+- **OUT**: Outputs to the console
+- **EQU**: Checks if the 2 arguments that follow are equal (can be variables or hardcoded)
+- **VAR**: Creates a variable with the using the 2 following arguments as the name and value
+- **CDN**: checks a condition (basically an if statement) argument that follows CDN must be a keyword
+- **NXT**: defines what should be executed if above CDN returns true
+- **ELSE**: defines what should be executed if above CDN returns false
+- **EXS**: check if variable name that follows is defined
+- **RDM**: returns a random value between 0 and the first argument
+- **EVL**: evaluates the math expression that follows
+- **LST**: creates a list, uses the first argument as the name and the others as value added to the list
 
 ## A few precisions
 
