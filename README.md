@@ -4,7 +4,7 @@ A "programming language" I made, it ressembles assembly, but it's not effecient 
 
 ## Syntax
 
-**OUT**: Outputs to the console
+**OUT**: Outputs to the console\n
 **EQU**: Checks if the 2 arguments that follow are equal (can be variables or hardcoded)
 **VAR**: Creates a variable with the using the 2 following arguments as the name and value
 **CDN**: checks a condition (basically an if statement) argument that follows CDN must be a keyword
